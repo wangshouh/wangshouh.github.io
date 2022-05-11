@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Wong Shouhao">
+    
+    <title>
+        
+            以Openwrt路由器为核心的家庭网络构建 |
+        
+        Wong&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="https://s-bj-3358-blog.oss.dogecdn.com/logo.svg">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/css/font-awesome.min.css">
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"wangshouh.github.io","root":"/","language":"en","path":"search.json"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"https://ae01.alicdn.com/kf/H60a2fb584e4a4e7f8a7c727d55647953Q.jpg","favicon":"https://s-bj-3358-blog.oss.dogecdn.com/logo.svg","article_img_align":"center","left_side_width":"255px","content_max_width":"920px","hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"Hello World."},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+  </script>
+<meta name="generator" content="Hexo 6.2.0"><link rel="alternate" href="/atom.xml" title="Wong's Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                Wong&#39;s Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/tags"
+                            >
+                                TAGS
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/tags">TAGS</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">以Openwrt路由器为核心的家庭网络构建</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="https://ae01.alicdn.com/kf/H60a2fb584e4a4e7f8a7c727d55647953Q.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">Wong Shouhao</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2022-02-14 13:50:00</span>
+        <span class="mobile">2022-02-14 13:50</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/Network/">Network</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/OpenWrt/">OpenWrt</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>698 Words</span>
+        </span>
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h2 id="环境概览"><a href="#环境概览" class="headerlink" title="环境概览"></a>环境概览</h2><p>家庭的基本情况如下：</p>
+<ul>
+<li>三层楼房，总建筑面积较大</li>
+<li>千兆入口光纤</li>
+<li>主要活动范围为一楼</li>
+</ul>
+<p>家庭的主要硬件如下：</p>
+<ul>
+<li>软路由器，系统为openwrt</li>
+<li>千兆双频无线路由器</li>
+<li>百兆无线路由器，品牌为TP-Link</li>
+<li>联通自带千兆光猫</li>
+<li>多部手机</li>
+<li>具备千兆网卡的笔记本电脑</li>
+</ul>
+<h2 id="网络接线情况"><a href="#网络接线情况" class="headerlink" title="网络接线情况"></a>网络接线情况</h2><p><img src="https://s-bj-3358-blog.oss.dogecdn.com/network.svg" alt="Wiring Diagrams"></p>
+<p>联通光猫与接入光纤直接相连，光猫已设置为桥接模式并不进行拨号，功能仅为转换光电信号。</p>
+<p>光猫任选一个Lan口，与后端千兆无线路由器的Wan口连接。由于此网线承载这个家庭网络，故应尽可能选择高规格网线，此处我个人选择了六类网线。此处千兆无线路由器主要负责一楼的无线网络。</p>
+<blockquote>
+<p>网线规格表<br><img src="https://ae01.alicdn.com/kf/H9fc2a5ff43a4420fb4535275cc0ec828e.png" alt="Wireless Cable Specification"><br>该表来源于<a class="link"   target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%8F%8C%E7%BB%9E%E7%BA%BF" >Wikipedia<i class="fas fa-external-link-alt"></i></a></p>
+</blockquote>
+<p>千兆路由器任选Lan口与斐讯N1软路由连接，再选一个Lan口与二楼的百兆路由器的Lan口使用五类网线相连接。该百兆路由器使用2.4GHz频段，负责二楼与三楼的无线网络。</p>
+<h2 id="路由器配置"><a href="#路由器配置" class="headerlink" title="路由器配置"></a>路由器配置</h2><h3 id="主无线路由器配置（千兆路由器）"><a href="#主无线路由器配置（千兆路由器）" class="headerlink" title="主无线路由器配置（千兆路由器）"></a>主无线路由器配置（千兆路由器）</h3><p>Wan口设置为PPPoE拨号，PPPoE拨号用户名和密码自行设置。</p>
+<p>Lan口IP设置为 <code>192.168.10.1</code>，子网掩码设置为 <code>255.255.255.0</code>。<br>DHCP服务器开启，地址池设置为开始地址为 <code>192.168.1.100</code>，结束地址为 <code>192.168.1.255</code>。</p>
+<h3 id="副无线路由器配置（百兆路由器）"><a href="#副无线路由器配置（百兆路由器）" class="headerlink" title="副无线路由器配置（百兆路由器）"></a>副无线路由器配置（百兆路由器）</h3><p>注意此处为保证家庭网络位于同一网段，我们需要特殊设置，使路由器启用AP交换机模式。具体内容可参考以下<a class="link"   target="_blank" rel="noopener" href="https://service.tp-link.com.cn/detail_article_4145.html" >教程<i class="fas fa-external-link-alt"></i></a>。</p>
+<p>简单来说，就是放弃Wan口，仅使用Lan口，并在Lan口设置DHCP服务器。Lan口IP设置为 <code>192.168.10.2</code>，子网掩码设置为 <code>255.255.255.0</code>。DHCP服务器开启，地址池设置为开始地址为 <code>192.168.1.3</code>，结束地址为 <code>192.168.1.49</code>，网关为 <code>192.168.10.1</code>。</p>
+<h3 id="软路由配置"><a href="#软路由配置" class="headerlink" title="软路由配置"></a>软路由配置</h3><p>打开软路由器的设置界面，点击“网络”，点击“接口”，修改“br-lan”，各项设置如下图：</p>
+<p><img src="https://ae01.alicdn.com/kf/H743cc3f6c5ff434280b20d5630250861P.png" alt="Setting"></p>
+<blockquote>
+<p>注意此处DHCP服务器选择<code>忽略此接口</code></p>
+</blockquote>
+<h2 id="实现效果"><a href="#实现效果" class="headerlink" title="实现效果"></a>实现效果</h2><p>家内所有设备位于同一网段并可互相访问，这对软路由器为全家设备服务是很重要的前提。</p>
+<h2 id="拓展阅读"><a href="#拓展阅读" class="headerlink" title="拓展阅读"></a>拓展阅读</h2><ul>
+<li><p><input checked="" disabled="" type="checkbox"> 
+<a href="https://wangshouh.github.io/2022/02/15/smartdns_setting/">Openwrt系列教程：使用SmartDNS加速DNS解析</a></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+Openwrt系列教程：使用WireGuard实现VPN访问</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+Openwrt系列教程：使用Aria2实现离线下载</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+Openwrt系列教程：使用smb实现共享文件</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+Openwrt系列教程：使用动态DNS实现动态访问</p>
+</li>
+</ul>
+
+        </div>
+
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/Network/">#Network</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/OpenWrt/">#OpenWrt</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2022/02/15/smartdns_setting/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">Openwrt系列教程：使用SmartDNS加速DNS解析</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2022/02/11/wireguard_nat_proxy/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">基于wireguard与NAT实现windows10代理服务器</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2022&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">Wong Shouhao</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;|&nbsp;Theme&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+            <li class="tools-item rss flex-center">
+                <a class="flex-center"
+                   href="/atom.xml"
+                   target="_blank"
+                >
+                    <i class="fas fa-rss"></i>
+                </a>
+            </li>
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%A6%82%E8%A7%88"><span class="nav-number">1.</span> <span class="nav-text">环境概览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E6%8E%A5%E7%BA%BF%E6%83%85%E5%86%B5"><span class="nav-number">2.</span> <span class="nav-text">网络接线情况</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1%E5%99%A8%E9%85%8D%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">路由器配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E6%97%A0%E7%BA%BF%E8%B7%AF%E7%94%B1%E5%99%A8%E9%85%8D%E7%BD%AE%EF%BC%88%E5%8D%83%E5%85%86%E8%B7%AF%E7%94%B1%E5%99%A8%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">主无线路由器配置（千兆路由器）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%AF%E6%97%A0%E7%BA%BF%E8%B7%AF%E7%94%B1%E5%99%A8%E9%85%8D%E7%BD%AE%EF%BC%88%E7%99%BE%E5%85%86%E8%B7%AF%E7%94%B1%E5%99%A8%EF%BC%89"><span class="nav-number">3.2.</span> <span class="nav-text">副无线路由器配置（百兆路由器）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AF%E8%B7%AF%E7%94%B1%E9%85%8D%E7%BD%AE"><span class="nav-number">3.3.</span> <span class="nav-text">软路由配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%95%88%E6%9E%9C"><span class="nav-number">4.</span> <span class="nav-text">实现效果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%93%E5%B1%95%E9%98%85%E8%AF%BB"><span class="nav-number">5.</span> <span class="nav-text">拓展阅读</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/utils.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/main.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/header-shrink.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/back2top.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/dark-light-toggle.js"></script>
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/local-search.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/code-copy.js"></script>
+
+
+
+
+<div class="post-scripts">
+    
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/left-side-toggle.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/libs/anime.min.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/toc.js"></script>
+    
+</div>
+
+
+
+</body>
+</html>

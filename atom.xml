@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Wong&#39;s Blog</title>
+  
+  
+  <link href="https://wangshouh.github.io/atom.xml" rel="self"/>
+  
+  <link href="https://wangshouh.github.io/"/>
+  <updated>2022-05-11T07:40:18.888Z</updated>
+  <id>https://wangshouh.github.io/</id>
+  
+  <author>
+    <name>Wong</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Openwrt系列教程：使用SmartDNS加速DNS解析</title>
+    <link href="https://wangshouh.github.io/2022/02/15/smartdns_setting/"/>
+    <id>https://wangshouh.github.io/2022/02/15/smartdns_setting/</id>
+    <published>2022-02-15T13:50:00.000Z</published>
+    <updated>2022-05-11T07:40:18.888Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="SmartDNS介绍"><a href="#SmartDNS介绍" class="headerlink" title="SmartDNS介绍"></a>SmartDNS介绍</h2><p>SmartDNS是一个运行在本地的DNS服务器，SmartDNS接受本地客户端的DNS查询请求，从多个上游DNS服务器获取DNS查询结果，并将访问速度最快的结果返回给客户端，提高网络访问速度。 同时支持指定特定域名IP地址，并高性匹配，达到过滤广告的效果。</p><blockquote><p>详情可见<a class="link"   href="https://github.com/pymumu/smartdns" >SmartDNS官网<i class="fas fa-external-link-alt"></i></a></p></blockquote><p>本文主要实现加速访问的效果，暂不考虑其他功能。</p><h2 id="安装SmartDNS"><a href="#安装SmartDNS" class="headerlink" title="安装SmartDNS"></a>安装SmartDNS</h2><p>SmartDNS安装主要参考上述<a class="link"   href="https://github.com/pymumu/smartdns" >官网<i class="fas fa-external-link-alt"></i></a>，本文将以<a class="link"   href="https://github.com/openwrt/luci" >OpenWrt luci<i class="fas fa-external-link-alt"></i></a>为例，安装步骤如下：</p><ol><li>点击<code>系统</code>下的<code>软件包</code>选项</li><li>在<code>过滤器</code>中输入<code>smartdns</code>，点击<code>查找软件包</code></li><li>下载<code>luci-app-smartdns</code>,<code>luci-i18n-smartdns-zh-cn</code>,<code>smartdns</code>三项</li></ol><p><img src="https://ae01.alicdn.com/kf/H04ae9198f33a4e1084188571a4e425f8i.png" alt="SmartDNS install"></p><blockquote><p>大部分openwrt编译版本一般都含有此软件包</p></blockquote><h2 id="SmartDNS的基本配置"><a href="#SmartDNS的基本配置" class="headerlink" title="SmartDNS的基本配置"></a>SmartDNS的基本配置</h2><p>见下图：</p><p><img src="https://ae01.alicdn.com/kf/Hf1a79c65b164415a8ec4defb85f3ff241.png" alt="Basic SmartDNS Setting"></p><p>应注意以下选项：</p><ul><li><p><code>双栈IP优选</code>，应注意您的设备是否完全支持IPv6，尤其是您所在的网络运营商是否支持</p></li><li><p><code>重定向</code>，应选择<code>重定向53端口到SmartDNS</code>，但如果您存在其他涉及DNS的软件，应自行选择</p></li></ul><h2 id="上游服务器配置"><a href="#上游服务器配置" class="headerlink" title="上游服务器配置"></a>上游服务器配置</h2><table><thead><tr><th>DNS服务器名称</th><th>DNS服务器地址</th></tr></thead><tbody><tr><td>阿里 AliDNS</td><td>223.5.5.5</td></tr><tr><td>百度 BaiduDNS</td><td>180.76.76.76</td></tr><tr><td>114 DNS</td><td>114.114.114.114</td></tr><tr><td>腾讯DNS</td><td>119.29.29.29</td></tr><tr><td>山东联通</td><td>202.102.128.68</td></tr><tr><td>Google DNS</td><td>8.8.8.8</td></tr><tr><td>CloudFlare</td><td>1.1.1.1</td></tr><tr><td>Quad9</td><td>9.9.9.9</td></tr></tbody></table><p>最终效果如下图：</p><p><img src="https://ae01.alicdn.com/kf/H6e26b18cfcc542db8c3684ba034df4d7t.png" alt="SmartDNS DNS Server"></p><h2 id="特殊设置"><a href="#特殊设置" class="headerlink" title="特殊设置"></a>特殊设置</h2><p>由于SmartDNS具有一般的DNS能力，我们可以在<code>域名地址</code>中进行指定的域名解析IP。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">address /home.lan/192.168.10.50</span><br></pre></td></tr></table></figure><p>如上述设置的作用是，当访问<code>http://home.lan</code>时，将解析成<code>192.168.10.50</code>，即我个人的路由器地址。</p><h2 id="客户端设置"><a href="#客户端设置" class="headerlink" title="客户端设置"></a>客户端设置</h2><p>在Windows 10中，通过以下步骤完成DNS设置：</p><ol><li><p>点击<code>Windows 设置</code>下的<code>网络和Internet</code>选项</p></li><li><p>点击<code>状态</code>中的<code>属性</code>，如下图：</p></li></ol><p><img src="https://ae01.alicdn.com/kf/H56f0a27be9fc4e3695bb8a5ef55975bfE.png" alt="Windows DNS Setting"></p><ol start="3"><li>下滑到<code>IP设置</code>，点击<code>编辑</code>，如下图：</li></ol><p><img src="https://ae01.alicdn.com/kf/H8590293925134362bee4497f53e5037dN.png" alt="IP setting"></p><ol start="4"><li><code>IP地址</code>填入任一未被占用的IP地址，<code>子网前缀</code>填入<code>32</code>,网关填入<code>192.168.10.50</code>，DNS服务器填入<code>192.168.10.50</code>，点击<code>保存</code></li></ol><h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>测试方法1：</p><p>打开浏览器，输入<code>http://home.lan</code>，如果生效可以直接访问到软路由主页</p><p>测试方法2：</p><p>打开<code>cmd</code>，输入<code>nslookup baidu.com</code>，如果设置正确则结果如下图：</p><p><img src="https://ae01.alicdn.com/kf/H3e9b0317741d4d85a585e710ac9f4c80V.png" alt="Test"></p><blockquote><p>配置正确返回的IP地址仅有一个，若返回多个则配置不正确</p></blockquote>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;SmartDNS介绍&quot;&gt;&lt;a href=&quot;#SmartDNS介绍&quot; class=&quot;headerlink&quot; title=&quot;SmartDNS介绍&quot;&gt;&lt;/a&gt;SmartDNS介绍&lt;/h2&gt;&lt;p&gt;SmartDNS是一个运行在本地的DNS服务器，SmartDNS接受本地客户</summary>
+      
+    
+    
+    
+    
+    <category term="Network" scheme="https://wangshouh.github.io/tags/Network/"/>
+    
+    <category term="OpenWrt" scheme="https://wangshouh.github.io/tags/OpenWrt/"/>
+    
+    <category term="SmartDNS" scheme="https://wangshouh.github.io/tags/SmartDNS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>以Openwrt路由器为核心的家庭网络构建</title>
+    <link href="https://wangshouh.github.io/2022/02/14/home_network/"/>
+    <id>https://wangshouh.github.io/2022/02/14/home_network/</id>
+    <published>2022-02-14T13:50:00.000Z</published>
+    <updated>2022-05-11T07:40:18.888Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="环境概览"><a href="#环境概览" class="headerlink" title="环境概览"></a>环境概览</h2><p>家庭的基本情况如下：</p><ul><li>三层楼房，总建筑面积较大</li><li>千兆入口光纤</li><li>主要活动范围为一楼</li></ul><p>家庭的主要硬件如下：</p><ul><li>软路由器，系统为openwrt</li><li>千兆双频无线路由器</li><li>百兆无线路由器，品牌为TP-Link</li><li>联通自带千兆光猫</li><li>多部手机</li><li>具备千兆网卡的笔记本电脑</li></ul><h2 id="网络接线情况"><a href="#网络接线情况" class="headerlink" title="网络接线情况"></a>网络接线情况</h2><p><img src="https://s-bj-3358-blog.oss.dogecdn.com/network.svg" alt="Wiring Diagrams"></p><p>联通光猫与接入光纤直接相连，光猫已设置为桥接模式并不进行拨号，功能仅为转换光电信号。</p><p>光猫任选一个Lan口，与后端千兆无线路由器的Wan口连接。由于此网线承载这个家庭网络，故应尽可能选择高规格网线，此处我个人选择了六类网线。此处千兆无线路由器主要负责一楼的无线网络。</p><blockquote><p>网线规格表<br><img src="https://ae01.alicdn.com/kf/H9fc2a5ff43a4420fb4535275cc0ec828e.png" alt="Wireless Cable Specification"><br>该表来源于<a class="link"   href="https://zh.wikipedia.org/wiki/%E5%8F%8C%E7%BB%9E%E7%BA%BF" >Wikipedia<i class="fas fa-external-link-alt"></i></a></p></blockquote><p>千兆路由器任选Lan口与斐讯N1软路由连接，再选一个Lan口与二楼的百兆路由器的Lan口使用五类网线相连接。该百兆路由器使用2.4GHz频段，负责二楼与三楼的无线网络。</p><h2 id="路由器配置"><a href="#路由器配置" class="headerlink" title="路由器配置"></a>路由器配置</h2><h3 id="主无线路由器配置（千兆路由器）"><a href="#主无线路由器配置（千兆路由器）" class="headerlink" title="主无线路由器配置（千兆路由器）"></a>主无线路由器配置（千兆路由器）</h3><p>Wan口设置为PPPoE拨号，PPPoE拨号用户名和密码自行设置。</p><p>Lan口IP设置为 <code>192.168.10.1</code>，子网掩码设置为 <code>255.255.255.0</code>。<br>DHCP服务器开启，地址池设置为开始地址为 <code>192.168.1.100</code>，结束地址为 <code>192.168.1.255</code>。</p><h3 id="副无线路由器配置（百兆路由器）"><a href="#副无线路由器配置（百兆路由器）" class="headerlink" title="副无线路由器配置（百兆路由器）"></a>副无线路由器配置（百兆路由器）</h3><p>注意此处为保证家庭网络位于同一网段，我们需要特殊设置，使路由器启用AP交换机模式。具体内容可参考以下<a class="link"   href="https://service.tp-link.com.cn/detail_article_4145.html" >教程<i class="fas fa-external-link-alt"></i></a>。</p><p>简单来说，就是放弃Wan口，仅使用Lan口，并在Lan口设置DHCP服务器。Lan口IP设置为 <code>192.168.10.2</code>，子网掩码设置为 <code>255.255.255.0</code>。DHCP服务器开启，地址池设置为开始地址为 <code>192.168.1.3</code>，结束地址为 <code>192.168.1.49</code>，网关为 <code>192.168.10.1</code>。</p><h3 id="软路由配置"><a href="#软路由配置" class="headerlink" title="软路由配置"></a>软路由配置</h3><p>打开软路由器的设置界面，点击“网络”，点击“接口”，修改“br-lan”，各项设置如下图：</p><p><img src="https://ae01.alicdn.com/kf/H743cc3f6c5ff434280b20d5630250861P.png" alt="Setting"></p><blockquote><p>注意此处DHCP服务器选择<code>忽略此接口</code></p></blockquote><h2 id="实现效果"><a href="#实现效果" class="headerlink" title="实现效果"></a>实现效果</h2><p>家内所有设备位于同一网段并可互相访问，这对软路由器为全家设备服务是很重要的前提。</p><h2 id="拓展阅读"><a href="#拓展阅读" class="headerlink" title="拓展阅读"></a>拓展阅读</h2><ul><li><p><input checked="" disabled="" type="checkbox"> <a href="https://wangshouh.github.io/2022/02/15/smartdns_setting/">Openwrt系列教程：使用SmartDNS加速DNS解析</a></p></li><li><p><input disabled="" type="checkbox"> Openwrt系列教程：使用WireGuard实现VPN访问</p></li><li><p><input disabled="" type="checkbox"> Openwrt系列教程：使用Aria2实现离线下载</p></li><li><p><input disabled="" type="checkbox"> Openwrt系列教程：使用smb实现共享文件</p></li><li><p><input disabled="" type="checkbox"> Openwrt系列教程：使用动态DNS实现动态访问</p></li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;环境概览&quot;&gt;&lt;a href=&quot;#环境概览&quot; class=&quot;headerlink&quot; title=&quot;环境概览&quot;&gt;&lt;/a&gt;环境概览&lt;/h2&gt;&lt;p&gt;家庭的基本情况如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;三层楼房，总建筑面积较大&lt;/li&gt;
+&lt;li&gt;千兆入口光纤&lt;/li&gt;
+&lt;li&gt;</summary>
+      
+    
+    
+    
+    
+    <category term="Network" scheme="https://wangshouh.github.io/tags/Network/"/>
+    
+    <category term="OpenWrt" scheme="https://wangshouh.github.io/tags/OpenWrt/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>基于wireguard与NAT实现windows10代理服务器</title>
+    <link href="https://wangshouh.github.io/2022/02/11/wireguard_nat_proxy/"/>
+    <id>https://wangshouh.github.io/2022/02/11/wireguard_nat_proxy/</id>
+    <published>2022-02-11T09:50:00.000Z</published>
+    <updated>2022-05-11T07:40:18.888Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>WireGuard是一个免费的网络通信隧道，它可以让您的私有网络和公共网络之间通过一个隧道，让您的私有网络不会被窃听。一般情况下，我们选择使用Linux服务器自带的iptables实现路由转发，实现私有网络和公共网络之间的通信。但是，在Windows上，尤其是个人Windows计算机上，我们缺乏有效的工具实现路由转发，因此我们很难实现私有网络和公共网络之间的通信。搭建出的WireGuard隧道毫无意义。此教程主要讲解如何使用Windows的NAT实现路由转发，并进一步实现私有网络和公共网络之间的通信。</p><h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><h3 id="安装WireGuard"><a href="#安装WireGuard" class="headerlink" title="安装WireGuard"></a>安装WireGuard</h3><p>由于本文主要涉及到Windows的NAT实现路由转发，所以我们仅介绍Windows下的安装方法。此过程较为简单，可自行可以参考<a class="link"   href="https://www.wireguard.com/install/" >WireGuard安装<i class="fas fa-external-link-alt"></i></a>中的介绍。</p><h3 id="生成WireGuard服务器端配置文件"><a href="#生成WireGuard服务器端配置文件" class="headerlink" title="生成WireGuard服务器端配置文件"></a>生成WireGuard服务器端配置文件</h3><p>在后文描述中，我们假定计算机A为服务端，计算机B为客户端。我们需要生成服务端的配置文件，以便计算机B能够连接到服务端后访问公共网络。</p><p>我们需要生成服务端的公钥和私钥。打开WireGuard软件，使用 <code>Ctrl+N</code> 快捷键创建新的隧道。</p><p>将隧道名称设置为 <code>wg0</code> ，将公钥复制保存到本地。</p><p>然后，输入以下配置内容</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ListenPort = 55555</span><br><span class="line">Address = 10.254.0.1/24</span><br></pre></td></tr></table></figure><p>其中，<code>ListenPort</code>为隧道监听端口，<code>Address</code>为隧道的IP地址和子网掩码。此处选择端口<code>55555</code>进行监听，使用了<code>10.254.0.1/24</code>的IP地址作为内网IP地址。</p><blockquote><p>&#x2F;24表示子网掩码为24，即255.255.255.0</p></blockquote><p>最终效果如下图所示：</p><p><img src="https://ae01.alicdn.com/kf/H9901cef7da9a40969c94a254b8f696e0N.png" alt="服务端基础配置"></p><h3 id="生成WireGuard客户端配置文件"><a href="#生成WireGuard客户端配置文件" class="headerlink" title="生成WireGuard客户端配置文件"></a>生成WireGuard客户端配置文件</h3><p>在计算机B上，我们需要生成客户端的配置文件。与上述服务端配置文件相同，我们需要生成客户端的公钥和私钥，并保存公钥钥到本地。该隧道命名为 <code>wg1</code> 。</p><p>然后，输入以下配置内容</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Address = 10.254.0.2/32</span><br></pre></td></tr></table></figure><p>其中，<code>Address</code>为客户端的IP地址和子网掩码。</p><blockquote><p>注意此处设置IP地址需要与服务器端的IP处于同一网段。</p></blockquote><p><img src="https://ae01.alicdn.com/kf/H52c11e9f3d1f410696126c0c640ef371V.png" alt="客户端基础配置"></p><h3 id="完善WireGuard服务端配置文件"><a href="#完善WireGuard服务端配置文件" class="headerlink" title="完善WireGuard服务端配置文件"></a>完善WireGuard服务端配置文件</h3><p>编辑服务端配置文件 <code>wg1</code> ，键入以下内容</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[Peer]</span><br><span class="line">PublicKey = w1bok71zGcFWSAmWCZIE3+ZijCZbrnpzJwrNm7RXqFg=</span><br><span class="line">AllowedIPs = 10.254.0.2/32</span><br></pre></td></tr></table></figure><p>注意替换<code>PublicKey</code>为计算机B的公钥，<code>AllowedIPs</code>为计算机B的IP地址。</p><blockquote><p><code>AllowIPs</code>为路由的IP地址段，可以设置多个，用逗号分隔。其含义为若服务器接收到此IP地址的数据包，则转发给私有网络。通常是该 Peer 的隧道 IP 地址和通过隧道的路由网络。</p></blockquote><h3 id="完善WireGuard客户端配置文件"><a href="#完善WireGuard客户端配置文件" class="headerlink" title="完善WireGuard客户端配置文件"></a>完善WireGuard客户端配置文件</h3><p>编辑客户端配置文件 <code>wg1</code> ，键入以下内容</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[Peer]</span><br><span class="line">PublicKey = QwiiphIK/UBvbV+n8L4/VOmBlLwSqXt2g0PoY0oJBhY=</span><br><span class="line">AllowedIPs = 0.0.0.0/0</span><br><span class="line">Endpoint = </span><br><span class="line">PersistentKeepalive = 25</span><br></pre></td></tr></table></figure><p>注意替换<code>PublicKey</code>为计算机A的公钥，<code>Endpoint</code>为计算机A的IP地址，<code>PersistentKeepalive</code>为保持连接的时间，单位为秒。</p><blockquote><p><code>AllowedIPs</code>设置为<code>0.0.0.0/0</code>的含义为路由此计算机的所有流量至私有网络。</p></blockquote><blockquote><p><code>PersistentKeepalive</code>该参数可不设置，但设置了该参数，则客户端会在每次连接后发送心跳包，保持连接。</p></blockquote><h3 id="测试连接"><a href="#测试连接" class="headerlink" title="测试连接"></a>测试连接</h3><p>打开<code>WireGuard</code>客户端，选定<code>wg2</code>为连接的隧道，再点击<code>连接</code>按钮。</p><p>如果连接成功，可以看到对端以及上次握手时间。</p><p>如下图：</p><p><img src="https://ae01.alicdn.com/kf/Hd1f4859a4ebe41b799cf42a44a089ca45.png" alt="连接测试"></p><h3 id="设置服务端NAT转发"><a href="#设置服务端NAT转发" class="headerlink" title="设置服务端NAT转发"></a>设置服务端NAT转发</h3><p>即使测试连接成功，我们发现客户端仍无法连接入公共网络。原因在于Windows服务端没有流量转发设置。在Liunx上，我们可以通过<code>iptable</code>等设置流量转发，但在Windows 10上我们缺乏响应的工具。经过测试，我们发现，如果我们设置了NAT转发，则客户端可以连接公共网络。</p><p>以下主要内容主要来自<a class="link"   href="https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/user-guide/setup-nat-network" >微软<i class="fas fa-external-link-alt"></i></a>，如果您的英语水平较高，可以自行查阅。</p><p>主要分为以下几个步骤：</p><ol><li><p>以 <strong>管理员</strong> 身份打开<code>PowerShell</code></p></li><li><p>首先找到需要设置NAT转发的网络接口，键入以下命令<code>Get-NetAdapter</code>，可以找到所有的网络接口，并记录<code>wg0</code>的<code>ifIndex</code>。如下图：<br><img src="https://ae01.alicdn.com/kf/Hec70d081d4bd4d6d8427618b8aea2d31Z.png" alt="get-NetAdapter"></p></li><li><p>配置NAT网关IP，我们一般使用命令<code>New-NetIPAddress</code>,完整命令如下：</p><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">New-NetIPAddress</span> <span class="literal">-IPAddress</span> &lt;NAT Gateway IP&gt; <span class="literal">-PrefixLength</span> &lt;NAT Subnet Prefix Length&gt; <span class="literal">-InterfaceIndex</span> &lt;ifIndex&gt;</span><br></pre></td></tr></table></figure></li></ol><blockquote><p><code>&lt;NAT Gateway IP&gt;</code>替换为NAT网关IP地址，在上述操作中为<code>10.254.0.1</code></p></blockquote><blockquote><p><code>&lt;NAT Subnet Prefix Length&gt;</code>为NAT网关的子网掩码长度，在上述操作中为<code>24</code></p></blockquote><blockquote><p><code>&lt;ifIndex&gt;</code>为<code>wg0</code>的<code>ifIndex</code></p></blockquote><ol start="4"><li>创建NAT网关，使用命令：</li></ol><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">New-NetNat</span> <span class="literal">-Name</span> &lt;NATOutsideName&gt; <span class="literal">-InternalIPInterfaceAddressPrefix</span> &lt;NAT subnet prefix&gt;</span><br></pre></td></tr></table></figure><blockquote><p><code>&lt;NATOutsideName&gt;</code>为NAT网关的名称，可随意命名</p></blockquote><blockquote><p><code>&lt;NAT subnet prefix&gt;</code>为NAT网关的子网掩码长度，在上述操作中为<code>10.254.0.0/24</code></p></blockquote><p>完整命令执行图如下：</p><p><img src="https://ae01.alicdn.com/kf/H31b66f24def94a9e90cc65d60339ff6ci.png" alt="NAT"></p><h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>使用客户端连接服务端，访问任一外部网络资源，如可成功访问则证明NAT转发成功。</p><p>以安卓客户端为例，展示效果：<br>使用 Wireguard 前，网络 IP 为中国移动，如下图</p><p><img src="https://i.imgur.com/5pvOqFg.jpeg" alt="Before"></p><p>使用 Wireguard 链接 windows 客户端后，网络 IP 显示为 windows 的联通 IP ，如下图</p><p><img src="https://i.imgur.com/N3dmLL5.jpeg" alt="After"></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;WireGuard是一个免费的网络通信隧道，它可以让您的私有网络和公共网络之间通过一个隧道，让您的私有网络不会被窃听。一般情况下，我们选择使</summary>
+      
+    
+    
+    
+    
+    <category term="WireGuard" scheme="https://wangshouh.github.io/tags/WireGuard/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="https://wangshouh.github.io/2022/02/10/hello-world/"/>
+    <id>https://wangshouh.github.io/2022/02/10/hello-world/</id>
+    <published>2022-02-10T09:50:00.000Z</published>
+    <updated>2022-05-11T07:40:18.888Z</updated>
+    
+    <content type="html"><![CDATA[<p>Welcome to <a class="link"   href="https://hexo.io/" >Hexo<i class="fas fa-external-link-alt"></i></a>! This is your very first post. Check <a class="link"   href="https://hexo.io/docs/" >documentation<i class="fas fa-external-link-alt"></i></a> for more info. If you get any problems when using Hexo, you can find the answer in <a class="link"   href="https://hexo.io/docs/troubleshooting.html" >troubleshooting<i class="fas fa-external-link-alt"></i></a> or you can ask me on <a class="link"   href="https://github.com/hexojs/hexo/issues" >GitHub<i class="fas fa-external-link-alt"></i></a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a class="link"   href="https://hexo.io/docs/writing.html" >Writing<i class="fas fa-external-link-alt"></i></a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a class="link"   href="https://hexo.io/docs/server.html" >Server<i class="fas fa-external-link-alt"></i></a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a class="link"   href="https://hexo.io/docs/generating.html" >Generating<i class="fas fa-external-link-alt"></i></a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a class="link"   href="https://hexo.io/docs/one-command-deployment.html" >Deployment<i class="fas fa-external-link-alt"></i></a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;Welcome to &lt;a class=&quot;link&quot;   href=&quot;https://hexo.io/&quot; &gt;Hexo&lt;i class=&quot;fas fa-external-link-alt&quot;&gt;&lt;/i&gt;&lt;/a&gt;! This is your very first post. Che</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+</feed>

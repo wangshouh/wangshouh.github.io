@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Wong Shouhao">
+    
+    <title>
+        
+            基于wireguard与NAT实现windows10代理服务器 |
+        
+        Wong&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="https://s-bj-3358-blog.oss.dogecdn.com/logo.svg">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/css/font-awesome.min.css">
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"wangshouh.github.io","root":"/","language":"en","path":"search.json"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"https://ae01.alicdn.com/kf/H60a2fb584e4a4e7f8a7c727d55647953Q.jpg","favicon":"https://s-bj-3358-blog.oss.dogecdn.com/logo.svg","article_img_align":"center","left_side_width":"255px","content_max_width":"920px","hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"Hello World."},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+  </script>
+<meta name="generator" content="Hexo 6.2.0"><link rel="alternate" href="/atom.xml" title="Wong's Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                Wong&#39;s Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/tags"
+                            >
+                                TAGS
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/tags">TAGS</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">基于wireguard与NAT实现windows10代理服务器</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="https://ae01.alicdn.com/kf/H60a2fb584e4a4e7f8a7c727d55647953Q.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">Wong Shouhao</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2022-02-11 09:50:00</span>
+        <span class="mobile">2022-02-11 09:50</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/WireGuard/">WireGuard</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>1.4k Words</span>
+        </span>
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>WireGuard是一个免费的网络通信隧道，它可以让您的私有网络和公共网络之间通过一个隧道，让您的私有网络不会被窃听。一般情况下，我们选择使用Linux服务器自带的iptables实现路由转发，实现私有网络和公共网络之间的通信。但是，在Windows上，尤其是个人Windows计算机上，我们缺乏有效的工具实现路由转发，因此我们很难实现私有网络和公共网络之间的通信。搭建出的WireGuard隧道毫无意义。此教程主要讲解如何使用Windows的NAT实现路由转发，并进一步实现私有网络和公共网络之间的通信。</p>
+<h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><h3 id="安装WireGuard"><a href="#安装WireGuard" class="headerlink" title="安装WireGuard"></a>安装WireGuard</h3><p>由于本文主要涉及到Windows的NAT实现路由转发，所以我们仅介绍Windows下的安装方法。此过程较为简单，可自行可以参考<a class="link"   target="_blank" rel="noopener" href="https://www.wireguard.com/install/" >WireGuard安装<i class="fas fa-external-link-alt"></i></a>中的介绍。</p>
+<h3 id="生成WireGuard服务器端配置文件"><a href="#生成WireGuard服务器端配置文件" class="headerlink" title="生成WireGuard服务器端配置文件"></a>生成WireGuard服务器端配置文件</h3><p>在后文描述中，我们假定计算机A为服务端，计算机B为客户端。我们需要生成服务端的配置文件，以便计算机B能够连接到服务端后访问公共网络。</p>
+<p>我们需要生成服务端的公钥和私钥。打开WireGuard软件，使用 <code>Ctrl+N</code> 快捷键创建新的隧道。</p>
+<p>将隧道名称设置为 <code>wg0</code> ，将公钥复制保存到本地。</p>
+<p>然后，输入以下配置内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ListenPort = 55555</span><br><span class="line">Address = 10.254.0.1/24</span><br></pre></td></tr></table></figure>
+
+<p>其中，<code>ListenPort</code>为隧道监听端口，<code>Address</code>为隧道的IP地址和子网掩码。此处选择端口<code>55555</code>进行监听，使用了<code>10.254.0.1/24</code>的IP地址作为内网IP地址。</p>
+<blockquote>
+<p>&#x2F;24表示子网掩码为24，即255.255.255.0</p>
+</blockquote>
+<p>最终效果如下图所示：</p>
+<p><img src="https://ae01.alicdn.com/kf/H9901cef7da9a40969c94a254b8f696e0N.png" alt="服务端基础配置"></p>
+<h3 id="生成WireGuard客户端配置文件"><a href="#生成WireGuard客户端配置文件" class="headerlink" title="生成WireGuard客户端配置文件"></a>生成WireGuard客户端配置文件</h3><p>在计算机B上，我们需要生成客户端的配置文件。与上述服务端配置文件相同，我们需要生成客户端的公钥和私钥，并保存公钥钥到本地。该隧道命名为 <code>wg1</code> 。</p>
+<p>然后，输入以下配置内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Address = 10.254.0.2/32</span><br></pre></td></tr></table></figure>
+<p>其中，<code>Address</code>为客户端的IP地址和子网掩码。</p>
+<blockquote>
+<p>注意此处设置IP地址需要与服务器端的IP处于同一网段。</p>
+</blockquote>
+<p><img src="https://ae01.alicdn.com/kf/H52c11e9f3d1f410696126c0c640ef371V.png" alt="客户端基础配置"></p>
+<h3 id="完善WireGuard服务端配置文件"><a href="#完善WireGuard服务端配置文件" class="headerlink" title="完善WireGuard服务端配置文件"></a>完善WireGuard服务端配置文件</h3><p>编辑服务端配置文件 <code>wg1</code> ，键入以下内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[Peer]</span><br><span class="line">PublicKey = w1bok71zGcFWSAmWCZIE3+ZijCZbrnpzJwrNm7RXqFg=</span><br><span class="line">AllowedIPs = 10.254.0.2/32</span><br></pre></td></tr></table></figure>
+
+<p>注意替换<code>PublicKey</code>为计算机B的公钥，<code>AllowedIPs</code>为计算机B的IP地址。</p>
+<blockquote>
+<p><code>AllowIPs</code>为路由的IP地址段，可以设置多个，用逗号分隔。其含义为若服务器接收到此IP地址的数据包，则转发给私有网络。通常是该 Peer 的隧道 IP 地址和通过隧道的路由网络。</p>
+</blockquote>
+<h3 id="完善WireGuard客户端配置文件"><a href="#完善WireGuard客户端配置文件" class="headerlink" title="完善WireGuard客户端配置文件"></a>完善WireGuard客户端配置文件</h3><p>编辑客户端配置文件 <code>wg1</code> ，键入以下内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[Peer]</span><br><span class="line">PublicKey = QwiiphIK/UBvbV+n8L4/VOmBlLwSqXt2g0PoY0oJBhY=</span><br><span class="line">AllowedIPs = 0.0.0.0/0</span><br><span class="line">Endpoint = </span><br><span class="line">PersistentKeepalive = 25</span><br></pre></td></tr></table></figure>
+
+<p>注意替换<code>PublicKey</code>为计算机A的公钥，<code>Endpoint</code>为计算机A的IP地址，<code>PersistentKeepalive</code>为保持连接的时间，单位为秒。</p>
+<blockquote>
+<p><code>AllowedIPs</code>设置为<code>0.0.0.0/0</code>的含义为路由此计算机的所有流量至私有网络。</p>
+</blockquote>
+<blockquote>
+<p><code>PersistentKeepalive</code>该参数可不设置，但设置了该参数，则客户端会在每次连接后发送心跳包，保持连接。</p>
+</blockquote>
+<h3 id="测试连接"><a href="#测试连接" class="headerlink" title="测试连接"></a>测试连接</h3><p>打开<code>WireGuard</code>客户端，选定<code>wg2</code>为连接的隧道，再点击<code>连接</code>按钮。</p>
+<p>如果连接成功，可以看到对端以及上次握手时间。</p>
+<p>如下图：</p>
+<p><img src="https://ae01.alicdn.com/kf/Hd1f4859a4ebe41b799cf42a44a089ca45.png" alt="连接测试"></p>
+<h3 id="设置服务端NAT转发"><a href="#设置服务端NAT转发" class="headerlink" title="设置服务端NAT转发"></a>设置服务端NAT转发</h3><p>即使测试连接成功，我们发现客户端仍无法连接入公共网络。原因在于Windows服务端没有流量转发设置。在Liunx上，我们可以通过<code>iptable</code>等设置流量转发，但在Windows 10上我们缺乏响应的工具。经过测试，我们发现，如果我们设置了NAT转发，则客户端可以连接公共网络。</p>
+<p>以下主要内容主要来自<a class="link"   target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/user-guide/setup-nat-network" >微软<i class="fas fa-external-link-alt"></i></a>，如果您的英语水平较高，可以自行查阅。</p>
+<p>主要分为以下几个步骤：</p>
+<ol>
+<li><p>以 <strong>管理员</strong> 身份打开<code>PowerShell</code></p>
+</li>
+<li><p>首先找到需要设置NAT转发的网络接口，键入以下命令<code>Get-NetAdapter</code>，可以找到所有的网络接口，并记录<code>wg0</code>的<code>ifIndex</code>。如下图：<br><img src="https://ae01.alicdn.com/kf/Hec70d081d4bd4d6d8427618b8aea2d31Z.png" alt="get-NetAdapter"></p>
+</li>
+<li><p>配置NAT网关IP，我们一般使用命令<code>New-NetIPAddress</code>,完整命令如下：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">New-NetIPAddress</span> <span class="literal">-IPAddress</span> &lt;NAT Gateway IP&gt; <span class="literal">-PrefixLength</span> &lt;NAT Subnet Prefix Length&gt; <span class="literal">-InterfaceIndex</span> &lt;ifIndex&gt;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<blockquote>
+<p><code>&lt;NAT Gateway IP&gt;</code>替换为NAT网关IP地址，在上述操作中为<code>10.254.0.1</code></p>
+</blockquote>
+<blockquote>
+<p><code>&lt;NAT Subnet Prefix Length&gt;</code>为NAT网关的子网掩码长度，在上述操作中为<code>24</code></p>
+</blockquote>
+<blockquote>
+<p><code>&lt;ifIndex&gt;</code>为<code>wg0</code>的<code>ifIndex</code></p>
+</blockquote>
+<ol start="4">
+<li>创建NAT网关，使用命令：</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">New-NetNat</span> <span class="literal">-Name</span> &lt;NATOutsideName&gt; <span class="literal">-InternalIPInterfaceAddressPrefix</span> &lt;NAT subnet prefix&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>&lt;NATOutsideName&gt;</code>为NAT网关的名称，可随意命名</p>
+</blockquote>
+<blockquote>
+<p><code>&lt;NAT subnet prefix&gt;</code>为NAT网关的子网掩码长度，在上述操作中为<code>10.254.0.0/24</code></p>
+</blockquote>
+<p>完整命令执行图如下：</p>
+<p><img src="https://ae01.alicdn.com/kf/H31b66f24def94a9e90cc65d60339ff6ci.png" alt="NAT"></p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>使用客户端连接服务端，访问任一外部网络资源，如可成功访问则证明NAT转发成功。</p>
+<p>以安卓客户端为例，展示效果：<br>使用 Wireguard 前，网络 IP 为中国移动，如下图</p>
+<p><img src="https://i.imgur.com/5pvOqFg.jpeg" alt="Before"></p>
+<p>使用 Wireguard 链接 windows 客户端后，网络 IP 显示为 windows 的联通 IP ，如下图</p>
+<p><img src="https://i.imgur.com/N3dmLL5.jpeg" alt="After"></p>
+
+        </div>
+
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/WireGuard/">#WireGuard</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2022/02/14/home_network/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">以Openwrt路由器为核心的家庭网络构建</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2022/02/10/hello-world/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">Hello World</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2022&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">Wong Shouhao</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;|&nbsp;Theme&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+            <li class="tools-item rss flex-center">
+                <a class="flex-center"
+                   href="/atom.xml"
+                   target="_blank"
+                >
+                    <i class="fas fa-rss"></i>
+                </a>
+            </li>
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">2.</span> <span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85WireGuard"><span class="nav-number">3.</span> <span class="nav-text">安装WireGuard</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E6%88%90WireGuard%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">4.</span> <span class="nav-text">生成WireGuard服务器端配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E6%88%90WireGuard%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">5.</span> <span class="nav-text">生成WireGuard客户端配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E5%96%84WireGuard%E6%9C%8D%E5%8A%A1%E7%AB%AF%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">6.</span> <span class="nav-text">完善WireGuard服务端配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E5%96%84WireGuard%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">7.</span> <span class="nav-text">完善WireGuard客户端配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E8%BF%9E%E6%8E%A5"><span class="nav-number">8.</span> <span class="nav-text">测试连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E6%9C%8D%E5%8A%A1%E7%AB%AFNAT%E8%BD%AC%E5%8F%91"><span class="nav-number">9.</span> <span class="nav-text">设置服务端NAT转发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">10.</span> <span class="nav-text">测试</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/utils.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/main.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/header-shrink.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/back2top.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/dark-light-toggle.js"></script>
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/local-search.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/code-copy.js"></script>
+
+
+
+
+<div class="post-scripts">
+    
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/left-side-toggle.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/libs/anime.min.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.5/source/js/toc.js"></script>
+    
+</div>
+
+
+
+</body>
+</html>
